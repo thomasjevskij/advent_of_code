@@ -8,18 +8,18 @@ def generate_weights(n):
 with open('input.txt') as f:
     inp = f.readlines()
 
-ing = []
+ingredients = []
 
 for i in inp:
     args = re.search(r'capacity (-?\d+), durability (-?\d+), flavor (-?\d+), texture (-?\d+), calories (-?\d+)$', i.rstrip()).groups()
     vals = map(int, args)
-    ing.append(tuple(vals))
+    ingredients.append(tuple(vals))
     
 p1 = -1
 p2 = -1
-for weights in generate_weights(len(ing)):
+for weights in generate_weights(len(ingredients)):
     tot = [0, 0, 0, 0, 0]
-    for i, item in enumerate(ing):
+    for i, item in enumerate(ingredients):
         for j, prop in enumerate(item):
             tot[j] += weights[i] * prop
     score = functools.reduce(lambda x,y: max(x,0)*max(y,0), tot[:-1])
