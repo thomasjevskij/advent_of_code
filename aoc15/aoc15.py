@@ -3,7 +3,7 @@ import re, functools, itertools
 def generate_weights():
     for t in itertools.combinations_with_replacement(range(101), 4):
         if sum(t) == 100:
-            yield t
+            yield from itertools.permutations(t)
 
 with open('input.txt') as f:
     inp = f.readlines()
