@@ -1,13 +1,13 @@
-import re
-
-p1 = set()
-l = {}
+import re, time
 
 def get_lights(start, stop):
     for x in range(start[0], stop[0] + 1):
         for y in range(start[1], stop[1] + 1):
             yield "%d,%d"%(x,y)
 
+t1 = time.process_time()
+p1 = set()
+l = {}
 finder = re.compile(r'([0-9]*),([0-9]*)')
 
 with open('input.txt') as f:
@@ -37,9 +37,7 @@ with open('input.txt') as f:
                 else:
                     p1.add(light)
 
-p2 = 0
-for light in l:
-    p2 += l[light]
-
+t1 = time.process_time() - t1
 print("Problem 1: %d"%len(p1))
-print("Problem 2: %d"%p2)
+print("Problem 2: %d"%sum(l[light] for light in l))
+print("Time elapsed: %f s"%t1)

@@ -1,3 +1,6 @@
+import time
+
+t = time.process_time()
 with open('input.txt') as f:
     d = f.read().rstrip()
 
@@ -10,7 +13,9 @@ for i, c in enumerate(d):
         floor -= 1
     if floor == -1 and look == -1:
         look = i + 1
+
+t = time.process_time() - t
 print("Problem 1: %d"%floor)
 print("Problem 2: %d"%look)
-
+print("Time elapsed: %d µs"%int(t * 1000000))
 

@@ -1,3 +1,5 @@
+import time
+
 class Animal:
     def __init__(self, s):
         args = s.split()
@@ -14,6 +16,7 @@ class Animal:
             self.current_state = (self.current_state + 1) % 2
             self.countdown = self.times[self.current_state]
 
+t = time.process_time()
 reindeer = []
 with open('input.txt') as f:
     for l in f.readlines():
@@ -27,8 +30,10 @@ for i in range(input_time):
         m = max(r.pos, m)
     for r in reindeer:
         r.points += int(r.pos == m) * 1
-        
+
+t = time.process_time() - t  
 print("Problem 1: %d" % max(reindeer, key = lambda r: r.pos).pos)
 print("Problem 2: %d" % max(reindeer, key = lambda r: r.points).points)
+print("Time elapsed: %d ms"%int(t * 1000))
 
 

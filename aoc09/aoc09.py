@@ -1,5 +1,7 @@
 from itertools import permutations
+import time
 
+t = time.process_time()
 cities = set()
 ways = {}
 
@@ -20,5 +22,7 @@ for r in permutations(cities):
     p1 = min(p1, route)
     p2 = max(p2,route) 
 
+t = time.process_time() - t 
 print("Problem 1: %d"%p1)
 print("Problem 2: %d"%p2)
+print("Time elapsed: %d ms"%int(t * 1000))

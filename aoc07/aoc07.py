@@ -1,6 +1,4 @@
-import re
-
-w = {}
+import re, time
 
 def get_val(s, wires):
     #literal
@@ -48,14 +46,20 @@ def get_val(s, wires):
         return wires[s]
     wires[s] = get_val(wires[s], wires)
     return wires[s]
-    
+
+t = time.process_time()
+w = {}    
 with open('input.txt') as f:
     for line in f.readlines():
         args = line.split(' -> ')
         w[args[1].strip()] = args[0].strip()
 
 a = get_val('a', w)
+t = time.process_time() - t
+print("Problem 1: %s"%a)
+print("Time elapsed: %d ms"%int(t * 1000))
 
+t = time.process_time()
 w.clear()
 with open('input.txt') as f:
     for line in f.readlines():
@@ -63,5 +67,6 @@ with open('input.txt') as f:
         w[args[1].strip()] = args[0].strip()
 w['b'] = a
 
-print("Problem 1: %s"%a)
+t = time.process_time() - t
 print("Problem 2: %s"%get_val('a', w))
+print("Time elapsed: %d µs"%int(t * 1000000))

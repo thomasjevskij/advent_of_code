@@ -1,10 +1,11 @@
-import re, functools, itertools
+import re, functools, itertools, time
 
 def generate_weights(n):
     for t in itertools.combinations_with_replacement(range(101), n):
         if sum(t) == 100:
             yield from itertools.permutations(t)
 
+t = time.process_time()
 with open('input.txt') as f:
     inp = f.readlines()
 
@@ -26,5 +27,7 @@ for weights in generate_weights(len(ingredients)):
     p1 = max(p1, score)
     p2 = max(p2, int(tot[-1] == 500) * score)
 
+t = time.process_time() - t
 print("Problem 1: %d"%p1)
 print("Problem 2: %d"%p2)
+print("Time elapsed: %d ms"%int(t * 1000))
