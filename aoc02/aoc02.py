@@ -1,3 +1,6 @@
+import time
+
+t = time.process_time()
 tot = 0
 rib = 0
 with open('input.txt') as f:
@@ -9,5 +12,7 @@ with open('input.txt') as f:
         tot += 2*l*w + 2*w*h + 2*h*l + min(l*w,w*h,h*l)
         rib += 2*(l+w+h) - 2*max(l,w,h) + l*w*h
 
+t = time.process_time() - t
 print("Problem 1: %d"%tot)
 print("Problem 2: %d"%rib)
+print("Time elapsed: %d ms"%int(t * 1000))

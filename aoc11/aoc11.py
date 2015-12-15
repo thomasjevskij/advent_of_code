@@ -1,4 +1,4 @@
-import re
+import re, time
 
 # a == 97
 # z == 122
@@ -38,19 +38,25 @@ def check_double(s):
         return True
     return False
 
+t = time.process_time()
 with open('input.txt') as f:
     s = f.readline().rstrip()
 
 while not (check_straight(s) and check_contain(s) and check_double(s)):
     s = inc(s)
 
+t = time.process_time() - t
 print("Problem 1: %s"%s)
+print("Time elapsed: %d ms"%int(t * 1000))
+
+t = time.process_time()
 s = inc(s)
 while not (check_straight(s) and check_contain(s) and check_double(s)):
     s = inc(s)
 
+t = time.process_time() - t
 print("Problem 2: %s"%s)
-
+print("Time elapsed: %d ms"%int(t * 1000))
 
 
 

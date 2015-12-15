@@ -1,3 +1,5 @@
+import time
+
 def move(pos, direction, visited):
     if direction == '^':
         pos = (pos[0], pos[1] + 1)
@@ -10,6 +12,7 @@ def move(pos, direction, visited):
     visited.add(pos)
     return pos
 
+t = time.process_time()
 reg_pos = (0, 0)
 santa_pos = (0, 0)
 robo_pos = (0,0)
@@ -31,5 +34,7 @@ for i, c in enumerate(route):
         robo_pos = move(robo_pos, c, robo_visited)
     reg_pos = move(reg_pos, c, reg_visited)
 
+t = time.process_time() - t
 print("Problem 1: %d" % len(reg_visited))
 print("Problem 2: %d" % len(santa_visited | robo_visited))
+print("Time elapsed: %d ms"%int(t * 1000))

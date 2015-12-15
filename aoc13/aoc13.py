@@ -1,4 +1,5 @@
 from itertools import permutations
+import time
 
 def comp_max(guests, edges):
     max_route = -1
@@ -10,6 +11,7 @@ def comp_max(guests, edges):
         max_route = max(max_route,route)
     return max_route
 
+t = time.process_time()
 with open('input.txt') as f:
     rel = f.readlines()
 
@@ -28,10 +30,15 @@ for r in rel:
     edges[args[0]+args[-1].rstrip('.')] = val
 
 print("Problem 1: %d"%comp_max(guests, edges))
+t = time.process_time() - t
+print("Time elapsed: %d ms"%int(t * 1000))
 
+t = time.process_time()
 for g in guests:
     edges['Me'+g] = 0
     edges[g+'Me'] = 0
 guests.add('Me')
 
 print("Problem 2: %d"%comp_max(guests, edges))
+t = time.process_time() - t
+print("Time elapsed: %d ms"%int(t * 1000))
