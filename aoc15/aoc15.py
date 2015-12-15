@@ -1,7 +1,7 @@
 import re, functools, itertools
 
-def generate_weights():
-    for t in itertools.combinations_with_replacement(range(101), 4):
+def generate_weights(n):
+    for t in itertools.combinations_with_replacement(range(101), n):
         if sum(t) == 100:
             yield from itertools.permutations(t)
 
@@ -17,7 +17,7 @@ for i in inp:
     
 p1 = -1
 p2 = -1
-for weights in generate_weights():
+for weights in generate_weights(len(ing)):
     tot = [0, 0, 0, 0, 0]
     for i, item in enumerate(ing):
         for j, prop in enumerate(item):
