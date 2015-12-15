@@ -5,9 +5,8 @@ def generate_weights():
     for i in range(101):
         for j in range(101):
             for k in range(101):
-                for l in range(101):
-                    if i+j+k+l == 100:
-                        yield (i, j, k, l)
+                if i+j+k <= 100:
+                    yield (i, j, k, 100-i-j-k)
 
 with open('input.txt') as f:
     inp = f.readlines()
