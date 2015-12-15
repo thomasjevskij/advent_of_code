@@ -1,12 +1,9 @@
-import re
-import functools
+import re, functools, itertools
 
 def generate_weights():
-    for i in range(101):
-        for j in range(101):
-            for k in range(101):
-                if i+j+k <= 100:
-                    yield (i, j, k, 100-i-j-k)
+    for t in itertools.combinations_with_replacement(range(101), 4):
+        if sum(t) == 100:
+            yield t
 
 with open('input.txt') as f:
     inp = f.readlines()
