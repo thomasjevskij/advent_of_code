@@ -22,10 +22,9 @@ with open('input.txt') as f:
         if '=>' in line:
             key, val = line.rstrip().split(' => ')
             inv_rep[val] = key
-            if key in rep:
-                rep[key].append(val)
-            else:
-                rep[key] = [val]
+            if key not in rep:
+                rep[key] = []
+            rep[key].append(val)
         else:
             s = line.rstrip()
 changes = set()
