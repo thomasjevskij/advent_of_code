@@ -11,9 +11,6 @@ def divisors(n):
             div.add(n / i)
     return div
 
-def presents(d, i):
-    return functools.reduce(lambda x,y: x + int(i / y <= 50) * y, d)
-
 t = time.process_time()
 with open('input.txt') as f:
     goal = int(f.read())
@@ -26,7 +23,7 @@ print("Problem 1: %d"%i)
 print("Time elapsed: %f s"%t)
 t = time.process_time()
 
-while presents(divisors(i), i) * 11 < goal:
+while functools.reduce(lambda x,y: x + int(i / y <= 50) * y, divisors(i)) * 11 < goal:
     i += 1
 t = time.process_time() - t
 print("Problem 2: %d"%i)
