@@ -28,7 +28,6 @@ rings = make_shop('rings.txt')
 n = {'cost':0, 'damage':0, 'armor':0}
 armors.append(n)
 rings.append(n)
-rings.append(n)
 with open('input.txt') as f:
     boss = {}
     f.readline()
