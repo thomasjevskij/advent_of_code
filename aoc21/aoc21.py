@@ -37,6 +37,10 @@ with open('rings.txt') as f:
         r['damage'] = int(args[-2])
         r['armor'] = int(args[-1])
         rings.append(r)
+n = {'cost':0, 'damage':0, 'armor':0}
+armors.append(n)
+rings.append(n)
+rings.append(n)
 with open('input.txt') as f:
     boss = {}
     f.readline()
@@ -45,43 +49,14 @@ with open('input.txt') as f:
 
 max_cost = -1
 min_cost = 10000
-for w in weapons:
-    eq_list = [w]
+for eq_list in product(weapons, armors, rings, rings):
+    if len(eq_list) == 4:
+        if eq_list[2]['cost'] > 0 and eq_list[2]['cost'] == eq_list[3]['cost']:
+            continue
     if fight(eq_list, boss):
         min_cost = min(min_cost, sum(e['cost'] for e in eq_list))
     else:
         max_cost = max(max_cost, sum(e['cost'] for e in eq_list))
-    for a in armors:
-        eq_list = [w, a]
-        if fight(eq_list, boss):
-            min_cost = min(min_cost, sum(e['cost'] for e in eq_list))
-        else:
-            max_cost = max(max_cost, sum(e['cost'] for e in eq_list))
-        for r1 in rings:
-            eq_list = [w, r1]
-            if fight(eq_list, boss):
-                min_cost = min(min_cost, sum(e['cost'] for e in eq_list))
-            else:
-                max_cost = max(max_cost, sum(e['cost'] for e in eq_list))
-            eq_list.append(a)
-            if fight(eq_list, boss):
-                min_cost = min(min_cost, sum(e['cost'] for e in eq_list))
-            else:
-                max_cost = max(max_cost, sum(e['cost'] for e in eq_list))
-                
-            for r2 in rings:
-                if r1['cost'] == r2['cost']:
-                    continue
-                eq_list = [w, r1, r2]
-                if fight(eq_list, boss):
-                    min_cost = min(min_cost, sum(e['cost'] for e in eq_list))
-                else:
-                    max_cost = max(max_cost, sum(e['cost'] for e in eq_list))
-                eq_list.append(a)
-                if fight(eq_list, boss):
-                    min_cost = min(min_cost, sum(e['cost'] for e in eq_list))
-                else:
-                    max_cost = max(max_cost, sum(e['cost'] for e in eq_list))
 
 t = tt() - t      
 print("Problem 1: %d"%min_cost)
