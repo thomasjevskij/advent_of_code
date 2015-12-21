@@ -40,9 +40,8 @@ with open('input.txt') as f:
 max_cost = -1
 min_cost = 10000
 for eq_list in product(weapons, armors, rings, rings):
-    if len(eq_list) == 4:
-        if eq_list[2]['cost'] > 0 and eq_list[2]['cost'] == eq_list[3]['cost']:
-            continue
+    if eq_list[2]['cost'] > 0 and eq_list[2]['cost'] == eq_list[3]['cost']:
+        continue
     if fight(eq_list, boss):
         min_cost = min(min_cost, sum(e['cost'] for e in eq_list))
     else:
