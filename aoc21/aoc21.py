@@ -1,13 +1,16 @@
 from time import process_time as tt
 from itertools import product
+from math import ceil
 
 def fight(eq_list, enemy):
     damage = sum(e['damage'] for e in eq_list)
     armor = sum(e['armor'] for e in eq_list)
     hero_dps = max(damage-enemy['armor'], 1)
     enemy_dps = max(enemy['damage']-armor, 1)
+    hero_times = ceil(enemy['hp'] / hero_dps)
+    enemy_times = ceil(100 / enemy_dps)
     
-    return hero_dps >= enemy_dps
+    return hero_times <= enemy_times
 
 def make_shop(s):
     with open(s) as f:
@@ -30,7 +33,7 @@ armors.append(n)
 rings.append(n)
 with open('input.txt') as f:
     boss = {}
-    f.readline()
+    boss['hp'] = int(f.readline().rstrip().split()[-1])
     boss['damage'] = int(f.readline().rstrip().split()[-1])
     boss['armor'] = int(f.readline().rstrip().split()[-1])
 
