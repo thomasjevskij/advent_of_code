@@ -9,34 +9,22 @@ def fight(eq_list, enemy):
     
     return hero_dps >= enemy_dps
 
+def make_shop(s):
+    with open(s) as f:
+        items = []
+        for line in f.readlines():
+            args = line.rstrip().split()
+            i = {}
+            i['cost'] = int(args[-3])
+            i['damage'] = int(args[-2])
+            i['armor'] = int(args[-1])
+            items.append(i)
+    return items
+
 t = tt()
-with open('weapons.txt') as f:
-    weapons = []
-    for line in f.readlines():
-        args = line.rstrip().split()
-        w = {}
-        w['cost'] = int(args[-3])
-        w['damage'] = int(args[-2])
-        w['armor'] = int(args[-1])
-        weapons.append(w)
-with open('armor.txt') as f:
-    armors = []
-    for line in f.readlines():
-        args = line.rstrip().split()
-        a = {}
-        a['cost'] = int(args[-3])
-        a['damage'] = int(args[-2])
-        a['armor'] = int(args[-1])
-        armors.append(a)
-with open('rings.txt') as f:
-    rings = []
-    for line in f.readlines():
-        args = line.rstrip().split()
-        r = {}
-        r['cost'] = int(args[-3])
-        r['damage'] = int(args[-2])
-        r['armor'] = int(args[-1])
-        rings.append(r)
+weapons = make_shop('weapons.txt')
+armors = make_shop('armor.txt')
+rings = make_shop('rings.txt')
 n = {'cost':0, 'damage':0, 'armor':0}
 armors.append(n)
 rings.append(n)
