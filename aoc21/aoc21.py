@@ -1,4 +1,5 @@
 from time import process_time as tt
+from itertools import product
 
 def fight(eq_list, enemy):
     damage = sum(e['damage'] for e in eq_list)
@@ -14,8 +15,8 @@ with open('weapons.txt') as f:
     for line in f.readlines():
         args = line.rstrip().split()
         w = {}
-        w['cost'] = int(args[1])
-        w['damage'] = int(args[2])
+        w['cost'] = int(args[-3])
+        w['damage'] = int(args[-2])
         w['armor'] = int(args[-1])
         weapons.append(w)
 with open('armor.txt') as f:
@@ -23,8 +24,8 @@ with open('armor.txt') as f:
     for line in f.readlines():
         args = line.rstrip().split()
         a = {}
-        a['cost'] = int(args[1])
-        a['damage'] = int(args[2])
+        a['cost'] = int(args[-3])
+        a['damage'] = int(args[-2])
         a['armor'] = int(args[-1])
         armors.append(a)
 with open('rings.txt') as f:
@@ -32,8 +33,8 @@ with open('rings.txt') as f:
     for line in f.readlines():
         args = line.rstrip().split()
         r = {}
-        r['cost'] = int(args[1])
-        r['damage'] = int(args[2])
+        r['cost'] = int(args[-3])
+        r['damage'] = int(args[-2])
         r['armor'] = int(args[-1])
         rings.append(r)
 with open('input.txt') as f:
