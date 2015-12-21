@@ -1,0 +1,6 @@
+Damage+1    25     1       0
+Damage+2    50     2       0
+Damage+3   100     3       0
+Defense+1   20     0       1
+Defense+2   40     0       2
+Defense+3   80     0       3
