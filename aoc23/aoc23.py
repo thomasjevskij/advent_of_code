@@ -1,6 +1,6 @@
 from time import process_time as pt
 
-class TuringMachine:
+class Computer:
     def __init__(self, program, a = 0, b = 0):
         self.program = program
         self.position = 0
@@ -46,9 +46,9 @@ class TuringMachine:
 
 t = pt()
 with open('input.txt') as f:
-    TC = TuringMachine(list(f.readlines()))
-TC.run()
-TC2 = TuringMachine(TC.program, a = 1)
-TC2.run()
+    C = Computer(list(f.readlines()))
+C.run()
+C2 = Computer(C.program, a = 1)
+C2.run()
 t = pt() - t
 print('Process time: %d µs'%int(t*1000000))
