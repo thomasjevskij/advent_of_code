@@ -7,8 +7,6 @@ with open('input.txt') as f:
     packages = list(map(int, f.readlines()))
 
 all_loads = sum(packages)
-p1_loads = []
-p2_loads = []
 done = False
 i = 1
 p1 = p2 = 2**63
