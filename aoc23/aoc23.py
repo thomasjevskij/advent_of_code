@@ -1,10 +1,9 @@
 from time import process_time as pt
 
 class Computer:
-    def __init__(self, program, a = 0, b = 0):
-        self.program = program
+    def __init__(self):
         self.position = 0
-        self.registers = {'a': a, 'b': b}
+        self.registers = {'a': 0, 'b': 0}
         self.instructions = {'hlf': self.half,
                              'tpl': self.triple,
                              'inc': self.increment,
@@ -37,18 +36,21 @@ class Computer:
             self.position += offset
             return
         self.position += 1
-    def run(self):
-        while self.position >= 0 and self.position < len(self.program):
-            i, args = self.program[self.position].rstrip().split(maxsplit = 1)
+    def run(self, program, a = 0, b = 0):
+        self.registers['a'] = a
+        self.registers['b'] = b
+        self.position = 0
+        while self.position >= 0 and self.position < len(program):
+            i, args = program[self.position].rstrip().split(maxsplit = 1)
             self.instructions[i](args)
-        print("Register %s: %d\nRegister %s: %d"%('a', self.registers['a'],
-                                                  'b', self.registers['b']))
 
 t = pt()
 with open('input.txt') as f:
-    C = Computer(list(f.readlines()))
-C.run()
-C2 = Computer(C.program, a = 1)
-C2.run()
+    program = list(f.readlines())
+C = Computer()
+C.run(program)
+print("Problem 1: %d"%C.registers['b'])
+C.run(program, a = 1)
 t = pt() - t
+print("Problem 2: %d"%C.registers['b'])
 print('Process time: %d µs'%int(t*1000000))
