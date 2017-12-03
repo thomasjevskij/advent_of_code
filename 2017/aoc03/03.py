@@ -30,8 +30,7 @@ A = 9
 data = defaultdict(int)
 data[(0, 0)] = 1
 for a, b in spiral(A, A):
-    adjacent = [(a, b),(a+1,b+1),(a+1,b),(a+1,b-1),(a,b+1),(a,b-1),(a-1,b+1),(a-1,b),(a-1,b-1)]
-    data[(a,b)] = sum(data[x] for x in adjacent)
+    data[(a, b)] = sum(data[(a+x,b+y)] for x in range(-1, 2) for y in range(-1, 2))
     if data[(a,b)] > p:
         print(data[(a,b)])
         break
