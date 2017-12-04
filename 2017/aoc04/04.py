@@ -1,11 +1,2 @@
-problem1 = 0
-problem2 = 0
-with open('input.txt') as f:
-    for line in f.readlines():
-        passphrase = line.split()
-        if len(passphrase) == len(set(passphrase)):
-            problem1+= 1
-        if len(passphrase) == len(set(''.join(sorted(word)) for word in passphrase)):
-            problem2+= 1
-print(problem1)
-print(problem2)
+print(sum(len(l.split())==len(set(l.split())) for l in open('in')))
+print(sum(len(l.split())==len(set(tuple(sorted(w)) for w in l.split())) for l in open('in')))
