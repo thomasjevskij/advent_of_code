@@ -25,10 +25,7 @@ steps = 0
 while current < len(instructions_2):
     previous = current
     current += instructions_2[current]
-    if instructions_2[previous] >= 3:
-        instructions_2[previous] -= 1
-    else:
-        instructions_2[previous] += 1
+    instructions_2[previous] += 1 - int(instructions_2[previous] >= 3) * 2
     steps += 1
 print('Problem 2: {0}'.format(steps))
 t = time.process_time() - t
