@@ -1,7 +1,7 @@
 import time
 
-def forever():
-    i = 0
+def forever(start = 0):
+    i = start
     while True:
         yield i
         i += 1
@@ -14,7 +14,7 @@ t = time.process_time()
 c2 = 0
 visited = list()
 visited.append(tuple(banks))
-for c in forever():
+for c in forever(1):
     i, v = max(enumerate(banks), key=lambda x: x[1])
     banks[i] = 0
     while v > 0:
@@ -23,7 +23,6 @@ for c in forever():
         banks[i] += 1
         v -= 1
     state = tuple(banks)
-    c += 1
     if state in visited:
         c2 = c-visited.index(state)
         break
