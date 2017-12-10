@@ -44,9 +44,7 @@ for _ in range(64):
 d.rotate(curpos%len(d))
 
 sparse_hash = list(d)
-dense_hash = ''
-for i in range(0, len(d), 16):
-    dense_hash += '{0:02x}'.format(reduce(xor, sparse_hash[i:i+16]))
+dense_hash = ''.join('{0:02x}'.format(reduce(xor, sparse_hash[i:i+16])) for i in range(0, len(d), 16))
 
 print("Problem 2: {}".format(dense_hash))
 t = time.process_time() - t
