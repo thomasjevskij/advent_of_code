@@ -17,7 +17,7 @@ for l in lengths:
     temp = list(d)
     d = deque(list(reversed(temp[:l]))+temp[l:])
     curpos += l + skip_size
-    d.rotate(-(l+skip_size)%len(d))
+    d.rotate(-l-skip_size)
     skip_size += 1
     
 d.rotate(curpos%len(d))
@@ -39,7 +39,7 @@ for _ in range(64):
         temp = list(d)
         d = deque(list(reversed(temp[:l]))+temp[l:])
         curpos += l + skip_size
-        d.rotate(-(l+skip_size)%len(d))
+        d.rotate(-l-skip_size)
         skip_size += 1
 d.rotate(curpos%len(d))
 
