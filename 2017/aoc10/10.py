@@ -1,6 +1,7 @@
 import time
 from collections import deque
 from functools import reduce
+from operator import xor
 
 t = time.process_time()
 
@@ -45,7 +46,7 @@ d.rotate(curpos%len(d))
 sparse_hash = list(d)
 dense_hash = ''
 for i in range(0, len(d), 16):
-    dense_hash += '{0:02x}'.format(reduce(lambda x, y: x^y, sparse_hash[i:i+16]))
+    dense_hash += '{0:02x}'.format(reduce(xor, sparse_hash[i:i+16]))
 
 print("Problem 2: {}".format(dense_hash))
 t = time.process_time() - t
