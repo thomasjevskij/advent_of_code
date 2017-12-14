@@ -31,7 +31,7 @@ def explore(grid, start):
                 to_visit.append((row, col))
                 visited.append(128*row+col)
     
-    while len(to_visit) > 0:
+    while to_visit:
         row, col = to_visit.pop()
         dirs = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
         for row, col in dirs:
