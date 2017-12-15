@@ -13,8 +13,6 @@ with open('in') as f:
 
 a = aStart
 b = bStart
-#a = 65
-#b = 8921
 
 p1 = 0
 for _ in range(int(4e7)):
@@ -32,8 +30,6 @@ t = time.process_time()
 
 a = aStart
 b = bStart
-#a = 65
-#b = 8921
 
 p2 = 0
 for _ in range(int(5e6)):
