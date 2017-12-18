@@ -8,13 +8,13 @@ with open('in') as f:
 
 registers = defaultdict(int)
 
-snd = 0
+snd = []
 rcv = 0
 pc = 0
 while pc >= 0 and pc < len(program):
-    inst, args = program[pc].split()[0], program[pc].split()[1:]
+    inst, args = program[pc].strip().split()[0], program[pc].strip().split()[1:]
     if inst == 'snd':
-        snd = registers[args[0]] if args[0].isalpha() else int(args[0])
+        snd.append(registers[args[0]] if args[0].isalpha() else int(args[0]))
     if inst == 'set':
         registers[args[0]] = registers[args[1]] if args[1].isalpha() else int(args[1])
     if inst == 'add':
@@ -25,7 +25,7 @@ while pc >= 0 and pc < len(program):
         registers[args[0]] %= registers[args[1]] if args[1].isalpha() else int(args[1])
     if inst == 'rcv':
         arg = registers[args[0]] if args[0].isalpha() else int(args[0])
-        rcv = snd if arg != 0 else rcv
+        rcv = snd[-1] if arg != 0 else rcv
         if arg != 0:
             break
     if inst == 'jgz':
