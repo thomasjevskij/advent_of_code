@@ -58,7 +58,7 @@ class Program:
 t = time.process_time()
 
 with open('in') as f:
-    code = list(map(lambda x: x.rstrip(), f.readlines()))
+    code = f.read().split('\n')
 
 p0 = Program(code, 0)
 p1 = Program(code, 1)
