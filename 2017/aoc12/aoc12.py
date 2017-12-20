@@ -15,7 +15,6 @@ for line in stdin:
             
 G.add_edges_from(edges)        
 
-#print("Problem 1: {}".format(len(nx.node_connected_component(G, '0'))))
 print("Problem 2: {}".format(nx.number_connected_components(G)))
 t = time.process_time() - t
 print("Time elapsed: {0:.2f} s".format(t))

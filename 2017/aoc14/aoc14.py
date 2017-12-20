@@ -25,17 +25,17 @@ def explore(grid, start):
     to_visit = list()
     visited = [128*row+col]
     dirs = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
+    oob = lambda row, col: row >= 0 and row < 128 and col >= 0 and col < 128
     for row, col in dirs:
-        if row >= 0 and row < 128 and col >= 0 and col < 128:
+        if oob(row, col):
             if grid[row][col] == '1':
                 to_visit.append((row, col))
                 visited.append(128*row+col)
-    
     while to_visit:
         row, col = to_visit.pop()
         dirs = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
         for row, col in dirs:
-            if row >= 0 and row < 128 and col >= 0 and col < 128:
+            if oob(row, col):
                 if grid[row][col] == '1' and 128*row+col not in visited:
                     to_visit.append((row, col))
                     visited.append(128*row+col)
