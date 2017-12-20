@@ -6,25 +6,13 @@ north = 0
 east = 0
 p2 = 0
 distance = lambda n, e: max(int(abs(n)+0.5*abs(e)), abs(e))
+directions = {'n': lambda n, e: (n + 1, e), 's': lambda n, e: (n - 1, e),
+              'ne': lambda n, e: (n + 0.5, e + 1), 'se': lambda n, e: (n - 0.5, e + 1),
+              'nw': lambda n, e: (n + 0.5, e - 1), 'sw': lambda n, e: (n - 0.5, e - 1)}
 
 with open('in') as f:
     for step in f.read().split(','):
-        if step == 'n':
-            north += 1
-        if step == 's':
-            north -= 1
-        if step == 'ne':
-            north += 0.5
-            east += 1
-        if step == 'se':
-            north -= 0.5
-            east += 1
-        if step == 'sw':
-            north -= 0.5
-            east -= 1
-        if step == 'nw':
-            north += 0.5
-            east -= 1
+        north, east = directions[step](north, east)
         p2 = max(p2, distance(north, east))
 
 print("Problem 1: {}".format(distance(north, east)))
