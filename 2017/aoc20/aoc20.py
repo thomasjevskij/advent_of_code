@@ -29,13 +29,13 @@ print(f"Time elapsed: {t:.2f} s")
 
 t = time.process_time()
 for _ in range(39): # Increase number of loops until happy
-    temp = defaultdict(list)
+    collisions = defaultdict(list)
     for p in particles:
         p.move()
-        temp[tuple(p.p)].append(p)
-    for k in temp:
-        if len(temp[k]) > 1:
-            for p in temp[k]:
+        collisions[tuple(p.p)].append(p)
+    for k in collisions:
+        if len(collisions[k]) > 1:
+            for p in collisions[k]:
                 particles.remove(p)
         
 t = time.process_time() - t
