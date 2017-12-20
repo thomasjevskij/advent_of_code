@@ -12,6 +12,9 @@ class Particle:
     def move(self):
         self.v += self.a
         self.p += self.v
+    def Newton(self, t):
+        p = self.p + self.v * t + 0.5 * self.a * t**2
+        return sum(abs(i) for i in p)
         
 t = time.process_time()
 with open('in') as f:
@@ -21,10 +24,8 @@ particles = list()
 for ID, line in enumerate(data.split('\n')):
     particles.append(Particle(line, ID))
 
-p = min(particles, key=lambda x: sum(abs(i) for i in x.a))
-
 t = time.process_time() - t
-print(f"Problem 1: {p.ID}")
+print(f"Problem 1: {min(particles, key=lambda x: x.Newton(10**6)).ID}")
 print(f"Time elapsed: {t:.2f} s")
 
 t = time.process_time()
