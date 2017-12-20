@@ -25,7 +25,7 @@ for ID, line in enumerate(data.split('\n')):
     particles.append(Particle(line, ID))
 
 t = time.process_time() - t
-print(f"Problem 1: {min(particles, key=lambda x: x.Newton(10**6)).ID}")
+print(f"Problem 1: {min(particles, key=lambda x: x.Newton(321)).ID}") # Increase argument in Newton until happy
 print(f"Time elapsed: {t:.2f} s")
 
 t = time.process_time()
