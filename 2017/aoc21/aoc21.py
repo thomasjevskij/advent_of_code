@@ -47,11 +47,7 @@ for rule in rule_input:
         aList.append(list(map(int, line)))
     rules[flat_arr(np.array(bList))] = np.array(aList)
     
-start = """.#.
-..#
-###""".replace('.', '0').replace('#', '1').split('\n')
-
-grid = np.array(list(map(lambda x: list(map(int, x)), start)))
+grid = np.array([[0, 1, 0], [0, 0, 1], [1, 1, 1]], dtype = int)
 
 for _ in range(5):
     grid = zoom(rules, grid)
