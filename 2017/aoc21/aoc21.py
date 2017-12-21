@@ -2,19 +2,13 @@ import time
 import numpy as np
 
 def lookup(rules, arr):
-    if flat_arr(arr) in rules:
-        return rules[flat_arr(arr)]
-    for _ in range(3):
-        arr = np.rot90(arr)
-        if flat_arr(arr) in rules:
-            return rules[flat_arr(arr)]
-    arr = np.flip(arr, 1)
-    if flat_arr(arr) in rules:
-        return rules[flat_arr(arr)]
-    for _ in range(3):
-        arr = np.rot90(arr)
-        if flat_arr(arr) in rules:
-            return rules[flat_arr(arr)]
+    cases = [arr, np.rot90(arr), np.rot90(arr, 2), np.rot90(arr, 3),
+             np.flip(arr, 1), np.rot90(np.flip(arr, 1)),
+             np.rot90(np.flip(arr, 1), 2), np.rot90(np.flip(arr, 1), 3)]
+    for c in cases:
+        if flat_arr(c) in rules:
+            return rules[flat_arr(c)]
+
 def zoom(rules, grid):
     if len(grid) % 2 == 0:
         new_grid = np.zeros((3 * len(grid) // 2, 3 * len(grid) // 2), dtype=int)
