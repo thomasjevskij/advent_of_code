@@ -36,16 +36,13 @@ with open('in') as f:
 
 rules = dict()
 flat_arr = lambda arr: tuple(tuple(a) for a in arr)
+parse_grid = lambda s, c: np.array(list(map(lambda x: list(map(int, x)), s.split(c))))
 
 for rule in rule_input:
     before, after = map(lambda x: x.replace('.', '0').replace('#', '1'), rule.strip().split(' => '))
-    bList = []
-    for line in before.split('/'):
-        bList.append(list(map(int, line)))
-    aList = []
-    for line in after.split('/'):
-        aList.append(list(map(int, line)))
-    rules[flat_arr(np.array(bList))] = np.array(aList)
+    aList = parse_grid(after, '/')
+    bList = parse_grid(before, '/')
+    rules[flat_arr(bList)] = aList
     
 grid = np.array([[0, 1, 0], [0, 0, 1], [1, 1, 1]], dtype = int)
 
