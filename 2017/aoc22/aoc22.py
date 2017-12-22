@@ -7,7 +7,6 @@ def burst(grid, rules, iterations):
     direction = 0 + 1j
     infections = 0
     for _ in range(iterations):
-        #xy = tuple(map(int, (pos.real, pos.imag)))
         newCell, newDir, newInf = rules[grid[pos]]
         grid[pos] = newCell
         direction *= newDir
