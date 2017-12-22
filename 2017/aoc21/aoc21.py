@@ -6,8 +6,9 @@ def lookup(rules, arr):
              np.flip(arr, 1), np.rot90(np.flip(arr, 1)),
              np.rot90(np.flip(arr, 1), 2), np.rot90(np.flip(arr, 1), 3)]
     for c in cases:
-        if flat_arr(c) in rules:
-            return rules[flat_arr(c)]
+        f = flat_arr(c)
+        if f in rules:
+            return rules[f]
 
 def zoom(rules, grid):
     if len(grid) % 2 == 0:
