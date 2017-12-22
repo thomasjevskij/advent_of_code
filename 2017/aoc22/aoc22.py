@@ -7,9 +7,9 @@ def burst(grid, rules, iterations):
     direction = 0 + 1j
     infections = 0
     for _ in range(iterations):
-        xy = tuple(map(int, (pos.real, pos.imag)))
-        newCell, newDir, newInf = rules[grid[xy]]
-        grid[xy] = newCell
+        #xy = tuple(map(int, (pos.real, pos.imag)))
+        newCell, newDir, newInf = rules[grid[pos]]
+        grid[pos] = newCell
         direction *= newDir
         infections += newInf
         pos += direction
@@ -23,7 +23,7 @@ grid = defaultdict(lambda: '.')
 mid = len(sGrid) // 2
 for row in range(len(sGrid)):
     for col in range(len(sGrid)):
-        grid[(col-mid, -(row-mid))] = sGrid[row][col]
+        grid[(col-mid) - (row-mid)*1j] = sGrid[row][col]
 rules = {'#': ('.', -1j, 0), '.': ('#', 1j, 1)}
 
 print(f"Problem 1: {burst(copy(grid), rules, 10**4)}")
