@@ -33,6 +33,8 @@ class Program:
         else:
             self.registers['pc'] += jmp if int(args[0]) != 0 else 1
 def is_prime(n):
+    if n == 2 or n == 3:
+        return True
     if n % 2 == 0:
         return False
     for i in range(3, int(sqrt(n))+1, 2):
