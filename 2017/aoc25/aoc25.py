@@ -42,6 +42,6 @@ t = time.process_time()
 
 machine = TM('in')
 
-t = time.process_time() - t
 print(f"Problem 1: {machine.run()}")
+t = time.process_time() - t
 print(f"Time elapsed: {t:.2f} s")
