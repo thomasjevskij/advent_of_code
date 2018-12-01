@@ -19,18 +19,21 @@ print("Problem 1: {}".format(p1))
 t = time.process_time() - t
 print("Time elapsed: {0:.2f} s".format(t))
 
+t = time.process_time()
+
 p2 = 0
 log = defaultdict(int)
 log[p2] += 1
 
+instructions = instructions.split(' ')
 while True:
-    for i in instructions.split(' '):
-        p2 = eval(f'{p2}{i}')
-        log[p2] += 1
-        if log[p2] == 2:
-            break
+    i = instructions.pop(0)
+    p2 = eval(f'{p2}{i}')
+    log[p2] += 1
     if log[p2] == 2:
         break
+    instructions.append(i)
+    
 print("Problem 2: {}".format(p2))
 t = time.process_time() - t
 print("Time elapsed: {0:.2f} s".format(t))
