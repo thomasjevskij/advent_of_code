@@ -32,7 +32,7 @@ t = time.process_time()
 o_polymer = polymer
 p2 = len(o_polymer)
 
-alphabet = 'abcdefghijklmnopqrstuvwxyz'
+alphabet = set(o_polymer.lower())
 
 for c in alphabet:
     polymer = o_polymer.replace(c, '').replace(c.upper(), '')
