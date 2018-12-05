@@ -6,15 +6,7 @@ Created on Wed Dec  5 07:48:33 2018
 """
 
 import time
-
-def react(p):
-    couples = []
-    for i in range(1, len(p)):
-        if abs(ord(p[i]) - ord(p[i - 1])) == 32:
-            couples.append(p[i - 1] + p[i])
-    for c in couples:
-        p = p.replace(c, '')
-    return len(couples), p
+import re
 
 t = time.process_time()
 
@@ -22,11 +14,12 @@ with open('in') as f:
     o_polymer = f.read().strip()
 
 polymer = o_polymer
-alphabet = 'abcdefghijklmnopqrstuvwxyz'
+reg = re.compile(r'(.)(?!\1)(?i:\1)')
 
 while True:
-    changes, polymer = react(polymer)
-    if changes == 0:
+    old = len(polymer)
+    polymer = reg.sub('', polymer)
+    if old == len(polymer):
         p1 = len(polymer)
         break
 
@@ -39,11 +32,14 @@ t = time.process_time()
 o_polymer = polymer
 p2 = len(o_polymer)
 
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
 for c in alphabet:
     polymer = o_polymer.replace(c, '').replace(c.upper(), '')
     while True:
-        changes, polymer = react(polymer)
-        if changes == 0:
+        old = len(polymer)
+        polymer = reg.sub('', polymer)
+        if old == len(polymer):
             p2 = min(p2, len(polymer))
             break
     
