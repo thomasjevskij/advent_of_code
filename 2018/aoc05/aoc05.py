@@ -36,6 +36,7 @@ print("Time elapsed: {0:.2f} s".format(t))
 
 t = time.process_time()
 
+o_polymer = polymer
 p2 = len(o_polymer)
 
 for c in alphabet:
