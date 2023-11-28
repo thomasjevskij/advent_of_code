@@ -1,11 +1,15 @@
+def parse_input():
+    with open(0) as f:
+        lines = f.readlines()
+    return lines
+
 def p1(lines):
     print('Not done yet.')
 
 def p2(lines):
     print('Not done yet.')
 
-with open(0) as f:
-    lines = f.readlines()
+puzzle_input = parse_input()
 
-p1(lines.copy())
-p2(lines.copy())
+p1(puzzle_input.copy())
+p2(puzzle_input.copy())
