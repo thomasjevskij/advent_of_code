@@ -1,34 +1,29 @@
 import re
+from collections import namedtuple
 
-def p1(lines):
-    rules = {'red': 12, 'green': 13, 'blue': 14}
-    s = 0
+def parse_input():
+    with open(0) as f:
+        lines = f.readlines()
+    result = []
+    Game = namedtuple('Game', ['num', 'red', 'green', 'blue'])
     for l in lines:
-        game = int(re.findall(r'Game \d+', l.strip())[0].split()[-1])
-        cubes = re.findall(r'\d+ red|\d+ green|\d+ blue', l.strip())
-        for c in cubes:
-            num, col = c.split()
-            num = int(num)
-            if num > rules[col]:
-                s -= game
-                break
-        s += game
+        num = int(re.findall(r'Game \d+', l.strip())[0].split()[-1])
+        reds = list(map(lambda x: int(x.split()[0]), re.findall(r'\d+ red', l.strip())))
+        greens = list(map(lambda x: int(x.split()[0]), re.findall(r'\d+ green', l.strip())))
+        blues = list(map(lambda x: int(x.split()[0]), re.findall(r'\d+ blue', l.strip())))
+        result.append(Game(num, max(reds), max(greens), max(blues)))
+    return result
+        
+
+def p1(puzzle_input):
+    red, green, blue = 12, 13, 14
+    s = sum(g.num for g in puzzle_input if g.red <= red and g.green <= green and g.blue <= blue)
     print(s)
 
-def p2(lines):
-    s = 0
-    for l in lines:
-        cubes = re.findall(r'\d+ red|\d+ green|\d+ blue', l.strip())
-        min_cubes = {'red': 0, 'green': 0, 'blue': 0}
-        for c in cubes:
-            num, col = c.split()
-            num = int(num)
-            min_cubes[col] = max(num, min_cubes[col])
-        s += min_cubes["red"]*min_cubes["green"]*min_cubes["blue"]
+def p2(puzzle_input):
+    s = sum(g.red * g.green * g.blue for g in puzzle_input)
     print(s)
 
-with open(0) as f:
-    lines = f.readlines()
-
-p1(lines.copy())
-p2(lines.copy())
+puzzle_input = parse_input()
+p1(puzzle_input.copy())
+p2(puzzle_input.copy())
