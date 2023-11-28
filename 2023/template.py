@@ -11,5 +11,5 @@ def p2(lines):
 
 puzzle_input = parse_input()
 
-p1(puzzle_input.copy())
-p2(puzzle_input.copy())
+p1(puzzle_input[:])
+p2(puzzle_input[:])
