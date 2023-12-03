@@ -1,6 +1,6 @@
 def parse_input():
     with open(0) as f:
-        lines = f.readlines()
+        lines = [l.strip() for l in f.readlines()]
     return lines
 
 def p1(lines):
