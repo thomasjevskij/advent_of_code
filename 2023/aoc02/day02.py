@@ -1,6 +1,5 @@
 import re
 from collections import namedtuple
-from collections import namedtuple
 
 def parse_input():
     with open(0) as f:
@@ -21,8 +20,6 @@ def p1(puzzle_input):
     s = sum(g.num for g in puzzle_input if g.red <= red and g.green <= green and g.blue <= blue)
     print(s)
 
-def p2(puzzle_input):
-    s = sum(g.red * g.green * g.blue for g in puzzle_input)
 def p2(puzzle_input):
     s = sum(g.red * g.green * g.blue for g in puzzle_input)
     print(s)
