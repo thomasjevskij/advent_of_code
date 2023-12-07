@@ -8,8 +8,7 @@ def parse_input():
     return result
 
 def score(hand):
-    score = ''
-    hand_set = set(hand)
+    hand_set = frozenset(hand)
     longest = max(hand.count(c) for c in hand_set)
     if len(hand_set) == 5:
         return 'a'
@@ -32,9 +31,14 @@ def p1(hands):
                     'Q': 'k', 'K': 'l', 'A': 'm'}
         return ''.join(mapping[c] for c in hand)
 
-    s = sum(i * bid for i, (_, bid) in enumerate(sorted(hands, 
-            key=lambda x: score(x[0])+tiebreak(x[0])), 
-            start=1))
+    s = sum(i * bid for i, (_, bid) in 
+            enumerate(
+                sorted(
+                    hands, key=lambda x: score(x[0])+tiebreak(x[0])
+                    ), 
+                start=1
+                )
+            )
     print(s)
 
 def p2(hands):
@@ -46,12 +50,16 @@ def p2(hands):
     def jokerify(hand):
         if hand != 'JJJJJ':
             c_longest, _ = max(((c, hand.count(c)) for c in hand if not c == 'J'), key=lambda x:x[1])
-            return hand.replace('J', c_longest)
-        else:
-            return hand
-    s = sum(i * bid for i, (_, bid) in enumerate(sorted(hands, 
-            key=lambda x: score(jokerify(x[0])) + tiebreak(x[0])), 
-            start=1))
+            hand = hand.replace('J', c_longest)
+        return hand
+    s = sum(i * bid for i, (_, bid) in 
+            enumerate(
+                sorted(
+                    hands, key=lambda x: score(jokerify(x[0])) + tiebreak(x[0])
+                    ), 
+                start=1
+                )
+            )
 
     print(s)
     
