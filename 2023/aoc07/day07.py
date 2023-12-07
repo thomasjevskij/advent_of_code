@@ -7,67 +7,51 @@ def parse_input():
         result.append((hand, int(bid)))
     return result
 
+def score(hand):
+    score = ''
+    hand_set = set(hand)
+    longest = max(hand.count(c) for c in hand_set)
+    if len(hand_set) == 5:
+        return 'a'
+    if len(hand_set) == 4:
+        return 'b'
+    if len(hand_set) == 3 and longest == 2:
+        return 'c'
+    if len(hand_set) == 3 and longest == 3:
+        return 'd'
+    if len(hand_set) == 2 and longest == 3:
+        return 'e'
+    if len(hand_set) == 2 and longest == 4:
+        return 'f'
+    return 'g'
+    
 def p1(hands):
-    def score(hand):
-        score = ''
-        hand_set = set(hand)
-        longest = max(hand.count(c) for c in hand_set)
+    def tiebreak(hand):
         mapping = {'2': 'a', '3': 'b', '4': 'c', '5': 'd', '6': 'e',
-            '7': 'f', '8': 'g', '9': 'h', 'T': 'i', 'J': 'j', 
-            'Q': 'k', 'K': 'l', 'A': 'm'}
-        if len(hand_set) == 5:
-            score += 'a'
-        elif len(hand_set) == 4:
-            score += 'b'
-        elif len(hand_set) == 3 and longest == 2:
-            score += 'c'
-        elif len(hand_set) == 3 and longest == 3:
-            score += 'd'
-        elif len(hand_set) == 2 and longest == 3:
-            score += 'e'
-        elif len(hand_set) == 2 and longest == 4:
-            score += 'f'
-        elif len(hand_set) == 1:
-            score += 'g'
-        for c in hand:
-            score += mapping[c]
-        return score
+                    '7': 'f', '8': 'g', '9': 'h', 'T': 'i', 'J': 'j', 
+                    'Q': 'k', 'K': 'l', 'A': 'm'}
+        return ''.join(mapping[c] for c in hand)
 
-    s = sum(i * bid for i, (_, bid) in enumerate(sorted(hands, key=lambda x: score(x[0])), start=1))
+    s = sum(i * bid for i, (_, bid) in enumerate(sorted(hands, 
+            key=lambda x: score(x[0])+tiebreak(x[0])), 
+            start=1))
     print(s)
 
 def p2(hands):
-    def score(hand):
-        if hand != 'JJJJJ':
-            c_longest, longest = max(((c, hand.count(c)) for c in hand if not c == 'J'), key=lambda x:x[1])
-            j_hand = hand.replace('J', c_longest)
-            hand_set = set(j_hand)
-            longest = max(j_hand.count(c) for c in hand_set)
-        else:
-            hand_set = set(hand)
-            longest = max(hand.count(c) for c in hand_set)
+    def tiebreak(hand):
         mapping = {'J': 'a', '2': 'b', '3': 'c', '4': 'd', '5': 'e', 
                    '6': 'f', '7': 'g', '8': 'h', '9': 'i', 'T': 'j', 
                    'Q': 'k', 'K': 'l', 'A': 'm'}
-        score = ''
-        if len(hand_set) == 5:
-            score += 'a'
-        elif len(hand_set) == 4:
-            score += 'b'
-        elif len(hand_set) == 3 and longest == 2:
-            score += 'c'
-        elif len(hand_set) == 3 and longest == 3:
-            score += 'd'
-        elif len(hand_set) == 2 and longest == 3:
-            score += 'e'
-        elif len(hand_set) == 2 and longest == 4:
-            score += 'f'
-        elif len(hand_set) == 1:
-            score += 'g'
-        for c in hand:
-            score += mapping[c]
-        return score
-    s = sum(i * bid for i, (_, bid) in enumerate(sorted(hands, key=lambda x: score(x[0])), start=1))
+        return ''.join(mapping[c] for c in hand)
+    def jokerify(hand):
+        if hand != 'JJJJJ':
+            c_longest, _ = max(((c, hand.count(c)) for c in hand if not c == 'J'), key=lambda x:x[1])
+            return hand.replace('J', c_longest)
+        else:
+            return hand
+    s = sum(i * bid for i, (_, bid) in enumerate(sorted(hands, 
+            key=lambda x: score(jokerify(x[0])) + tiebreak(x[0])), 
+            start=1))
 
     print(s)
     
