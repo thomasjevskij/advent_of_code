@@ -1,6 +1,4 @@
 from itertools import pairwise
-from functools import reduce
-from operator import sub
 
 def parse_input():
     with open(0) as f:
