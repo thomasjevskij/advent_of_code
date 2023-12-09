@@ -14,29 +14,22 @@ def parse_input():
         graph[node] = (e1, e2)
     return lr, graph
 
-def p1(lr, graph):
+def walk(start, target, graph, lr):
     s = 0
-    current = 'AAA'
+    current = start
     for c in cycle(lr):
         s += 1
         current = graph[current][0] if c == 'L' else graph[current][1]
-        if current == 'ZZZ':
-            break
+        if current.endswith(target):
+            return s
+
+def p1(lr, graph):
+    s = walk('AAA', 'ZZZ', graph, lr)
     print(s)
 
 def p2(lr, graph):
-    current = [n for n in graph if n.endswith('A')]
-    path_lengths = []
-    for cur in current:
-        start = cur
-        s = 0
-        for c in cycle(lr):
-            s += 1
-            cur = graph[cur][0] if c == 'L' else graph[cur][1]
-            if cur.endswith('Z'):
-                path_lengths.append(s)
-                break
-    print(lcm(*path_lengths))
+    s = lcm(*[walk(n, 'Z', graph, lr) for n in graph if n.endswith('A')])
+    print(s)
 
 lr, graph = parse_input()
 
