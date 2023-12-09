@@ -3,7 +3,7 @@ from itertools import pairwise
 def parse_input():
     with open(0) as f:
         lines = [l.strip() for l in f.readlines()]
-    sequences = tuple([int(n) for n in l.split()] for l in lines)
+    sequences = tuple(tuple(int(n) for n in l.split()) for l in lines)
     return sequences
 
 def diff(seq):
