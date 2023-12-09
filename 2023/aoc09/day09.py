@@ -1,3 +1,5 @@
+from itertools import pairwise
+
 def parse_input():
     with open(0) as f:
         lines = [l.strip() for l in f.readlines()]
@@ -8,11 +10,8 @@ def p1(sequences):
     def process_seq(seq):
         seqs = [seq]
         while True:
-            diff_seq = []
-            for ii in range(1, len(seqs[0])):
-                diff_seq.append(seqs[0][ii]-seqs[0][ii-1])
-            seqs.insert(0, diff_seq)
-            if len(set(diff_seq)) == 1:
+            seqs.insert(0, [s2 - s1 for s1, s2 in pairwise(seqs[0])])
+            if len(set(seqs[0])) == 1:
                 break
         for i in range(len(seqs)-1):
             seqs[i+1].append(seqs[i][-1]+seqs[i+1][-1])
@@ -24,11 +23,8 @@ def p2(sequences):
     def process_seq(seq):
         seqs = [seq]
         while True:
-            diff_seq = []
-            for ii in range(1, len(seqs[0])):
-                diff_seq.append(seqs[0][ii]-seqs[0][ii-1])
-            seqs.insert(0, diff_seq)
-            if len(set(diff_seq)) == 1:
+            seqs.insert(0, [s2 - s1 for s1, s2 in pairwise(seqs[0])])
+            if len(set(seqs[0])) == 1:
                 break
         for i in range(len(seqs)-1):
             seqs[i+1].insert(0, seqs[i+1][0]-seqs[i][0])
