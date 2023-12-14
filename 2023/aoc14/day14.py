@@ -58,6 +58,9 @@ def tilt_cycle(rocks):
             if rocks[row][col] == 'O':
                 roll_east(rocks, row, col)
 
+def flatten(r):
+        return tuple(tuple(line) for line in r)
+
 def p1(rocks):
     for col in range(len(rocks[0])):
         for row in range(1, len(rocks)):
@@ -67,22 +70,20 @@ def p1(rocks):
     print(s)
 
 def p2(rocks):
-    def flatten(r):
-        return tuple(tuple(line) for line in r)
-    visited = set()
-    visited.add(flatten(rocks))
-    for i in range(20):
+    visited = []
+    s = flatten(rocks)
+    while True:
+        visited.append(s)
         tilt_cycle(rocks)
-        load = sum(r.count('O')*(len(r)-i) for i, r in enumerate(rocks))
-        print(f'Load: {load}, cycle: {i}')
-        s = flatten(rocks)
+        s = flatten(rocks)  
         if s in visited:
-            print(f'Visited already: {i}')
-        visited.add(s)
+            start = visited.index(s)
+            cycle_length = len(visited) - start            
+            break
+    i = (1_000_000_000 - start) % cycle_length + start
+    print(sum(r.count('O')*(len(r)-i) for i, r in enumerate(visited[i])))
 
 rocks = parse_input()
-
-# print(*rocks, sep='\n', end='\n'+'-'*len(rocks[0])+'\n')
 
 p1(rocks[:])
 p2(rocks[:])
