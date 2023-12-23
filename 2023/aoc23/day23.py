@@ -3,7 +3,6 @@ from sys import setrecursionlimit
 import re
 
 def parse_input():
-    # with open('aoc23/test_input') as f:
     with open(0) as f:
         lines = [l.strip() for l in f.readlines()]
     return lines
@@ -50,7 +49,6 @@ def make_graph(grid):
                     q.append(n_xy)
     return graph
 
-
 def find_next(grid, prev, start, end):
     steps = 0
     q = deque()
@@ -72,32 +70,17 @@ def find_next(grid, prev, start, end):
             return None
         q.append(neighbors[0])
         prev = (x, y)
-        
-def dfs(grid, node, end, lens, v=set(), path=[]):
-    v.add(node)
-    path.append(node)
-    if node == end:
-        lens.append(len(path)-1)
-    else:
-        for n in get_neighbors(grid, node):
-            if not n in v:
-                dfs(grid, n, end, lens, v, path)
-    path.pop()
-    if node in v:
-        v.remove(node)
 
-def dfs_2(graph, node, end, lens, v=set(), path=[]):
-    path.append(node)
+def dfs(graph, node, end, lens, v=set(), path=0):
+    w, xy = node
     xy = node[1]
     v.add(xy)
     if xy == end:
-        # print('found')
-        lens.append(sum(dist for dist, _ in path))
+        lens.append(path)
     else:
         for w, n_xy in graph[xy]:
             if not n_xy in v:
-                dfs_2(graph, (w, n_xy), end, lens, v, path)
-    path.pop()
+                dfs(graph, (w, n_xy), end, lens, v, path+w)
     if xy in v:
         v.remove(xy)
     
@@ -110,13 +93,8 @@ def p1(grid):
     end_y = len(grid)-1
     end_x = grid[end_y].find('.')
     lens = []
-
-    # dfs(grid, (start_x, start_y), (end_x, end_y), lens)
     graph = make_graph(grid)
-    # print(max(lens))
-    # lens.clear()
-    # print(graph)
-    dfs_2(graph, (0, (start_x, start_y)), (end_x, end_y), lens)
+    dfs(graph, (0, (start_x, start_y)), (end_x, end_y), lens)
     print(max(lens))
 
 def p2(grid):
@@ -128,7 +106,7 @@ def p2(grid):
     lens = []
     graph = make_graph(new_grid)
 
-    dfs_2(graph, (0, (start_x, start_y)), (end_x, end_y), lens)
+    dfs(graph, (0, (start_x, start_y)), (end_x, end_y), lens)
     print(max(lens))
 
 setrecursionlimit(1000000)
