@@ -83,9 +83,6 @@ def dfs(graph, node, end, lens, v=set(), path=0):
                 dfs(graph, (w, n_xy), end, lens, v, path+w)
     if xy in v:
         v.remove(xy)
-    
-
-
 
 def p1(grid):
     start_y = 0
