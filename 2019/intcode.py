@@ -2,7 +2,7 @@ from collections import deque
 
 class IntcodeComputer:
     def __init__(self, program):
-        self.program = tuple(program)
+        self.program = tuple(program[:])
         self.memory = list(program)
         self.current = 0
         self.opcodes = {1: self.add, 2: self.mul, 3: self.inp, 4: self.out,
@@ -16,10 +16,11 @@ class IntcodeComputer:
         self.output_stream = deque()
 
     def reset(self):
-        self.memory = list(self.program)
+        self.memory = list(self.program)[:]
         self.current = 0
         self.input_stream.clear()
         self.output_stream.clear()
+        return self
 
     def get_modes(self):
         code = self[self.current] // 100
@@ -32,6 +33,7 @@ class IntcodeComputer:
         term1, term2 = (t if m else self[t] for t, m in zip(terms, self.get_modes()))
         self[target] = term1 + term2
         self.current += 4
+        return True
 
     def mul(self):
         factors = self[self.current + 1:self.current + 3]
@@ -39,12 +41,16 @@ class IntcodeComputer:
         factor1, factor2 = (f if m else self[f] for f, m in zip(factors, self.get_modes()))
         self[target] = factor1 * factor2
         self.current += 4
+        return True
 
     def inp(self):
+        if not self.input_stream:
+            return False
         val = self.input_stream.popleft()
         target = self[self.current + 1]
         self[target] = val
         self.current += 2
+        return True
 
     def out(self):
         val = self[self.current + 1]
@@ -52,6 +58,7 @@ class IntcodeComputer:
         val = val if mode else self[val]
         self.output_stream.append(val)
         self.current += 2
+        return True
 
     def jump_if_true(self):
         args = self[self.current + 1: self.current + 3]
@@ -60,6 +67,7 @@ class IntcodeComputer:
             self.current = target
         else:
             self.current += 3
+        return True
 
     def jump_if_false(self):
         args = self[self.current + 1: self.current + 3]
@@ -68,6 +76,7 @@ class IntcodeComputer:
             self.current = target
         else:
             self.current += 3
+        return True
 
     def lt(self):
         args = self[self.current + 1: self.current + 3]
@@ -75,6 +84,7 @@ class IntcodeComputer:
         arg1, arg2 = (a if m else self[a] for a, m in zip(args, self.get_modes()))
         self[target] = int(arg1 < arg2)
         self.current += 4
+        return True
 
     def equals(self):
         args = self[self.current + 1: self.current + 3]
@@ -82,6 +92,7 @@ class IntcodeComputer:
         arg1, arg2 = (a if m else self[a] for a, m in zip(args, self.get_modes()))
         self[target] = int(arg1 == arg2)
         self.current += 4
+        return True
 
     def step(self, verbose):
         i = self.current
@@ -89,13 +100,17 @@ class IntcodeComputer:
         if verbose:
             f, length = self.strings[fun]
             print(f'{i} {f}: {self[i + 1:i + length]}')
-        self.opcodes[fun]()
+        return self.opcodes[fun]()
 
     def run(self, verbose=False, input_stream = []):
         self.input_stream.extend(input_stream)
         while (self[self.current]) != 99:
-            self.step(verbose)
+            if not self.step(verbose):
+                break
         return self
+    
+    def is_finished(self):
+        return self[self.current] == 99
 
     def __getitem__(self, key):
         return self.memory[key]
