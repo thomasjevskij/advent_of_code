@@ -140,6 +140,9 @@ class IntcodeComputer:
                 break
         return self
     
+    def popleft(self):
+        return self.output_stream.popleft()
+    
     def is_finished(self):
         return self[self.current] == 99
 
