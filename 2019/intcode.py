@@ -143,6 +143,10 @@ class IntcodeComputer:
     def popleft(self):
         return self.output_stream.popleft()
     
+    def append(self, val):
+        self.input_stream.append(val)
+        return self
+    
     def is_finished(self):
         return self[self.current] == 99
 
