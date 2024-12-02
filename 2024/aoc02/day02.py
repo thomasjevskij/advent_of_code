@@ -6,11 +6,9 @@ def parse_input(filename=0):
     return lines
 
 def is_safe(report):
-    is_sorted = report == tuple(sorted(report)) or report == tuple(sorted(report, reverse=True))
-    good_levels = all(abs(first - second) >= 1 and abs(first - second) <= 3 
-                      for first, second in pairwise(report))
-
-    return (is_sorted and good_levels)
+    test = lambda x: not any(second - first < 1 or second - first > 3 
+                      for first, second in pairwise(x))
+    return test(report) or test(report[::-1])
 
 def dampener(report):
     for i in range(len(report)):
@@ -23,12 +21,10 @@ def p1(reports):
 
     return num_safe, unsafe
 
-
 def p2(num_safe, unsafe):
     num_safe += sum(any(is_safe(r) for r in dampener(report)) for report in unsafe)
 
     print(num_safe)
-
 
 puzzle_input = parse_input()
 
