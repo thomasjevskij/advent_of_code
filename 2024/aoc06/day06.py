@@ -1,4 +1,4 @@
-from itertools import product
+from itertools import product, pairwise
 
 def parse_input(filename=0):
     with open(filename) as f:
@@ -8,53 +8,49 @@ def parse_input(filename=0):
 def get_xy(z):
     return int(z.real), int(z.imag)
 
-def p1(grid):
+def inside(z, grid):
+    x, y = get_xy(z)
     xlim = (0, len(grid[0]) - 1)
     ylim = (0, len(grid) - 1)
-    visited = set()
-    direction = -1j
+    return x >= xlim[0] and x <= xlim[1] and y >= ylim[0] and y <= ylim[1]
+
+def p1(grid):
     obstacles = set()
     for y, x in product(range(len(grid)), range(len(grid[0]))):
         if grid[y][x] == '^':
-            pos = x + 1j*y
+            start_pos = x + 1j*y
         elif grid[y][x] != '.':
             obstacles.add(x + 1j*y)
-    
-    def inside(z):
-        x, y = get_xy(z)
-        return x >= xlim[0] and x <= xlim[1] and y >= ylim[0] and y <= ylim[1]
-    
-    turning_points = []
-    while inside(pos):
-        visited.add(pos)
-        xn, yn = get_xy(pos + direction)    
-        if xn + 1j*yn in obstacles:
-            direction *= 1j
-            turning_points.append((pos, direction))
-        pos += direction
+
+    _, visited = walk(grid, start_pos, -1j, obstacles)
+    visited = set(p for p, _ in visited)
     print(len(visited))
 
-    return turning_points, obstacles
+    return grid, obstacles, start_pos, visited
 
-# TODO: Stega igenom och för varje steg, titta till höger och se om det finns
-# ett redan besökt hinder i line of sight.
-def p2(turning_points, obstacles):
-    num = 0
-    corners = []
-    for c1, c2, c3 in zip(turning_points, turning_points[1:], turning_points[2:]):
-        pos, direction = c3
-        target = c1[0]
-        while True:
-            zn = pos + direction
-            if zn in obstacles:
-                break
-            if zn.real == target.real or zn.imag == target.imag:
-                num += 1
-                corners.append(zn)
-                break
-            pos += direction
-    print(num, *(get_xy(z) for z in corners))
+def walk(grid, start_pos, start_dir, obstacles):
+    pos = start_pos
+    direction = start_dir
+    visited = set()
+    while inside(pos, grid):
+        if (pos, direction) in visited:
+            return True, visited
+        visited.add((pos, direction))
+        while pos + direction in obstacles:
+            direction *= 1j
+        pos += direction
+    return False, visited
 
+def p2(grid, obstacles, start_pos, visited):
+    pos = start_pos
+    direction = -1j
+    visited.remove(pos)
+    valid = set()
+    for p in visited:
+        loop, _ = walk(grid, pos, direction, obstacles | {p})
+        if loop:
+            valid.add(p)
+    print(len(valid))
 
 puzzle_input = parse_input()
 
