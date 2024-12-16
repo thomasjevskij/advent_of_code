@@ -1,7 +1,6 @@
 import numpy as np
 import re
 from copy import deepcopy
-from itertools import count
 
 def parse_input(filename=0):
     with open(filename) as f:
@@ -12,6 +11,18 @@ def parse_input(filename=0):
         robots.append((np.array(numbers[:2]), np.array(numbers[2:])))
     return robots
 
+def safety_factor(robots):
+    x_lim, y_lim = (11, 7) if len(robots) == 12 else (101, 103)
+    x_mid = x_lim // 2
+    y_mid = y_lim // 2
+
+    UL = sum(pos[0] < x_mid and pos[1] < y_mid for pos, _ in robots)
+    LL = sum(pos[0] < x_mid and pos[1] > y_mid for pos, _ in robots)
+    UR = sum(pos[0] > x_mid and pos[1] < y_mid for pos, _ in robots)
+    LR = sum(pos[0] > x_mid and pos[1] > y_mid for pos, _ in robots)
+
+    return UL * LL * UR * LR
+
 def p1(robots):
     x_lim, y_lim = (11, 7) if len(robots) == 12 else (101, 103)
     x_mid = x_lim // 2
@@ -21,43 +32,19 @@ def p1(robots):
             pos += vel
             pos[0] %= x_lim
             pos[1] %= y_lim
-    UL = sum(pos[0] < x_mid and pos[1] < y_mid for pos, _ in robots)
-    LL = sum(pos[0] < x_mid and pos[1] > y_mid for pos, _ in robots)
-    UR = sum(pos[0] > x_mid and pos[1] < y_mid for pos, _ in robots)
-    LR = sum(pos[0] > x_mid and pos[1] > y_mid for pos, _ in robots)
-    print(UL*LL*UR*LR)
-
-def print_robots(robots):
-    cols, rows = (101, 103)
-    s = ''
-    for row in range(rows):
-        for col in range(cols):
-            if any(all(pos == [col, row]) for pos, _ in robots):
-                s += '#'
-            else:
-                s += '.'
-        s += '\n'
-    print(s)
+    print(safety_factor(robots))
 
 def p2(robots):
-    cols, rows = (101, 103)
-    arr = np.zeros((rows, cols))
-    for pos, _ in robots:
-        col, row = pos
-        arr[row, col] += 1
-    for c in count(1):
+    x_lim, y_lim = (11, 7) if len(robots) == 12 else (101, 103)
+    vals = []
+    for c in range(1, 101 * 103 + 1):
         for pos, vel in robots:
-            col, row = pos
-            arr[row, col] -= 1
             pos += vel
-            pos[0] %= cols
-            pos[1] %= rows
-            col, row = pos
-            arr[row, col] += 1
-        if sum(arr.flat > 1) == 0:
-            # print_robots(robots)
-            print(c)
-            break
+            pos[0] %= x_lim
+            pos[1] %= y_lim
+        vals.append(safety_factor(robots))
+    idx, _ = min(enumerate(vals, start=1), key=lambda x: x[1])
+    print(idx)
 
 puzzle_input = parse_input()
 
