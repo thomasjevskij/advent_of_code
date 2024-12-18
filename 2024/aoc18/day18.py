@@ -12,8 +12,9 @@ def get_neighbors(pos):
         yield tuple(x + y for x, y in zip(pos, d))
         yield tuple(x - y for x, y in zip(pos, d))
 
-def bfs(grid, start, goal):
+def bfs(obstacles, start, goal):
     # Vanilla BFS
+    lim = goal[0]
     visited = set()
     Q = deque()
     visited.add(start)
@@ -22,7 +23,8 @@ def bfs(grid, start, goal):
         node, dist = Q.popleft()
         if node == goal:
             break
-        n_list = (n for n in get_neighbors(node) if grid[n] == '.')
+        n_list = (n for n in get_neighbors(node) if n not in obstacles and
+        0 <= n[0] <= lim and 0 <= n[1] <= lim)
         for neighbor in n_list:
             if neighbor not in visited:
                 visited.add(neighbor)
@@ -32,33 +34,18 @@ def bfs(grid, start, goal):
     return None
 
 def p1(b_list):
-    lim = 7 if len(b_list) == 25 else 71
-    grid = {}
-    for pos in product(range(lim), repeat=2):
-        grid[pos] = '.'
-    for pos in range(lim):
-        grid[(-1, pos)] = '#'
-        grid[(lim, pos)] = '#'
-        grid[(pos, -1)] = '#'
-        grid[(pos, lim)] = '#'
-    num = 12 if len(b_list) == 25 else 1024
-    for pos in b_list[:num]:
-        grid[pos] = '#'
-    c = bfs(grid, (0, 0), (lim - 1, lim - 1))
+    lim, num = (7, 12) if len(b_list) == 25 else (71, 1024)
+    c = bfs(set(b_list[:num]), (0, 0), (lim - 1, lim - 1))
     print(c)
 
-    return grid, b_list[num:]
-
-def p2(grid, b_list):
-    lim = 7 if len(b_list) == 25 - 12 else 71
-    pos = b_list.pop(0)
-    grid[pos] = '#'
-    while bfs(grid, (0, 0), (lim - 1, lim - 1)):
-        pos = b_list.pop(0)
-        grid[pos] = '#'
-    print(','.join(map(str, pos)))
+def p2(b_list):
+    lim, num_start = (7, 12) if len(b_list) == 25 else (71, 1024)
+    for num in range(num_start, len(b_list)):
+        if not bfs(set(b_list[:num]), (0, 0), (lim - 1, lim - 1)):
+            print(','.join(map(str,b_list[num - 1])))
+            break
 
 puzzle_input = parse_input()
 
-
-p2(*p1(puzzle_input[:]))
+p1(puzzle_input[:])
+p2(puzzle_input[:])
