@@ -1,10 +1,8 @@
 from itertools import product
-from collections import deque
 
 def parse_input(filename=0):
     with open(filename) as f:
-        lines = [l.strip() for l in f.readlines()]
-    b_list = [tuple(int(x) for x in l.split(',')) for l in lines]
+        b_list = [eval(l.strip()) for l in f.readlines()]
     return b_list
 
 def get_neighbors(pos):
@@ -12,25 +10,21 @@ def get_neighbors(pos):
         yield tuple(x + y for x, y in zip(pos, d))
         yield tuple(x - y for x, y in zip(pos, d))
 
-def bfs(obstacles, start, goal):
+# Just label the obstacles as already visited nodes
+def bfs(visited, start, goal):
     # Vanilla BFS
     lim = goal[0]
-    visited = set()
-    Q = deque()
+    Q = []
     visited.add(start)
     Q.append((start, 0)) # Schema: (x, y), (steps from start)
     # Put the filter here so the if statement below is less ugly
-    valid = lambda n: n not in obstacles \
-                      and 0 <= n[0] <= lim and 0 <= n[1] <= lim \
-                      and n not in visited
-    while Q:
-        node, dist = Q.popleft()
+    valid = lambda n: n not in visited and all(0 <= x <= lim for x in n)
+    # Learned a new trick about how you can for through a list and append
+    # to it mid loop to use it as a queue. No need for deque and popleft()
+    for node, dist in Q:
         if node == goal:
             break
-        # Just messing around with filter instead of generator expression
-        # Actually if I didn't use filter, I'd have to put the generator
-        # expression on its own row, or put if statements _in_ the for
-        # loop
+        # This is prettier than "for blabla: if blo and bli:"
         for neighbor in filter(valid, get_neighbors(node)):
             visited.add(neighbor)
             Q.append((neighbor, dist + 1))
@@ -39,19 +33,19 @@ def bfs(obstacles, start, goal):
     return None
 
 def p1(b_list):
-    lim, num = (7, 12) if len(b_list) == 25 else (71, 1024)
-    c = bfs(set(b_list[:num]), (0, 0), (lim - 1, lim - 1))
+    lim, num = (6, 12) if len(b_list) == 25 else (70, 1024)
+    c = bfs(set(b_list[:num]), (0, 0), (lim, lim))
     print(c)
 
 def p2(b_list):
-    lim, L = (7, 12) if len(b_list) == 25 else (71, 1024)
+    lim, L = (6, 12) if len(b_list) == 25 else (70, 1024)
     R = len(b_list) - 1
     # Binary search for SPEED (linear search worked just fine)
     # Avoid final iteration (usually condition is L <= R) because
     # we already know we will find an answer here
     while L < R:
         num = (L + R) // 2
-        if bfs(set(b_list[:num]), (0, 0), (lim - 1, lim - 1)):
+        if bfs(set(b_list[:num]), (0, 0), (lim, lim)):
             L = num + 1
         else:
             R = num - 1
