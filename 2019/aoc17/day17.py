@@ -67,16 +67,18 @@ def p2(opcodes):
     Then using str.replace, str.split and str.strip we can have a look
     at the remaining sequence and do it two more times. You could do
     some tree search I guess but it was easy enough by hand.'''
+    # Set up and start the bot
     bot = IntcodeComputer(opcodes[:])
     bot[0] = 2
+    bot.run()
+    # Construct the input
     seq = 'B,A,B,C,B,A,C,C,B,A'
     A = 'R,12,R,8,L,8,L,12'
     B = 'R,8,L,10,R,8'
     C = 'L,12,L,10,L,8'
     video_feed = 'n\n'
-    tot = '\n'.join([seq, A, B, C, video_feed])
-    bot.run()
-    bot.run(input_stream=[ord(c) for c in tot])
+    args = [ord(c) for c in '\n'.join([seq, A, B, C, video_feed])]
+    bot.run(input_stream=args)
     print(bot.output_stream[-1])
 
 opcodes = parse_input()
