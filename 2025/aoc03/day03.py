@@ -4,19 +4,16 @@ def parse_input(filename=0):
     return lines
 
 def p1(banks):
-    joltage = 0
-    for b in banks:
-        first = max(b[:-1])
-        idx = b.index(first)
-        last = max(b[idx + 1:])
-        joltage += int(first + last)
-    print(joltage)
+    print(calc_joltage(banks, 2))
 
 def p2(banks):
+    print(calc_joltage(banks, 12))
+
+def calc_joltage(banks, digits):
     joltage = 0
     for b in banks:
         s = ''
-        for i in range(11, -1, -1):
+        for i in range(digits - 1, -1, -1):
             if i != 0:
                 digit = max(b[:-i])
             else:
@@ -25,7 +22,7 @@ def p2(banks):
             idx = b.index(digit)
             b = b[idx + 1:]
         joltage += int(s)
-    print(joltage)
+    return joltage
 
 puzzle_input = parse_input()
 
