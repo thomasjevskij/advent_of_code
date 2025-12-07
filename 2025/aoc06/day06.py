@@ -1,6 +1,6 @@
 def parse_input(filename=0):
     with open(filename) as f:
-        lines = f.readlines()
+        lines = f.read().split('\n')
     return lines
 
 def p1(lines):
@@ -14,8 +14,8 @@ def p1(lines):
 def p2(lines):
     total = 0
     operands = []
-    for *digits, operator in zip(*[line.rstrip('\n')[::-1] for line in lines]):
-        if all(d == ' ' for d in digits) and operator == ' ':
+    for *digits, operator in zip(*[line[::-1] for line in lines]):
+        if not any(d.isnumeric() for d in digits):
             continue
         operands.append(''.join(digits))
         if operator in '*+':
